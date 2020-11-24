@@ -1,8 +1,7 @@
 const Comment = require("../models/commentModel");
 const Post = require("../models/postModel");
 const jwt = require("jsonwebtoken");
-require('dotenv').config();
-
+require("dotenv").config();
 
 exports.list_all_comments = (req, res) => {
   Comment.find({ post_id: req.params.post_id }, (error, comments) => {
@@ -46,7 +45,7 @@ exports.create_a_comment = (req, res) => {
       res.json({ message: error });
     } else {
       // ici le post existe donc on peut le creer
-      let tokenDecode = jwt.decode(req.headers['authorization']);
+      let tokenDecode = jwt.decode(req.headers["authorization"]);
       console.log(tokenDecode.email);
 
       let new_comment = new Comment({

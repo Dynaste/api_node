@@ -1,6 +1,6 @@
 module.exports = (server) => {
   const commentController = require("../controllers/commentController");
-  const jwtMiddleware = require('../middleware/jwtMiddleware');
+  const jwtMiddleware = require("../middleware/jwtMiddleware");
 
   server
     .route("/posts/:post_id/comments")

@@ -1,8 +1,6 @@
 const Post = require("../models/postModel");
 const loremApi = require("../providers/lorem");
 
-
-
 exports.list_all_post = (req, res) => {
   Post.find({}, (error, posts) => {
     if (error) {
@@ -38,8 +36,10 @@ exports.create_a_post = async (req, res) => {
   console.log(new_post);
 
   if (!new_post.content) {
-    const loremContent = await loremApi.getLorem("https://loripsum.net/api/plaintext");
-    console.log(await loremContent)
+    const loremContent = await loremApi.getLorem(
+      "https://loripsum.net/api/plaintext"
+    );
+    console.log(await loremContent);
     new_post.content = loremContent;
   }
 
