@@ -1,7 +1,8 @@
 const Comment = require("../models/commentModel");
+const Post = require('../models/postModel');
 
 exports.list_all_comments = (req, res) => {
-  Comment.find({}, (error, comments) => {
+  Comment.find({post_id: req.params.post_id}, (error, comments) => {
     if (error) {
       res.status(500);
       console.log(error);
@@ -31,19 +32,32 @@ exports.get_a_comment = (req, res) => {
 };
 
 exports.create_a_comment = (req, res) => {
-  let new_comment = new Comment(req.body);
-  console.log(new_comment);
+  let postId = req.params.post_id;
+  
 
-  new_comment.save((error, comment) => {
-    if (error) {
+  Post.findById(postId, (error) => { // ici on verifie que le user existe si il existe on le save
+    if (error) {   // si le user n'existe pas on return une erreur
       res.status(500);
       console.log(error);
-      res.json({ message: error });
-    } else {
-      res.status(200);
-      res.json(comment);
+      res.json({ message: error }); 
+    } else { // ici le user existe donc on peut le creer
+
+      let new_comment = new Comment({post_id: req.params.post_id, ...req.body});
+      console.log(new_comment);
+      new_comment.save((error, comment) => {
+        if (error) {
+          res.status(500);
+          console.log(error);
+          res.json({ message: error });
+        } else {
+          res.status(200);
+          res.json(comment);
+        }
+      });
     }
   });
+
+  
 };
 
 exports.update_a_comment = (req, res) => {
@@ -53,17 +67,15 @@ exports.update_a_comment = (req, res) => {
     { new: true },
     (err, comments) => {
       if (err) return res.status(500).send(err);
-      return res.send(comments);
+      return res.status(201).send(comments);
     }
   );
 };
 
 exports.delete_a_comment = (req, res) => {
   Comment.findByIdAndRemove(req.params.comment_id, (err, comments) => {
-    // As always, handle any potential errors:
+
     if (err) return res.status(500).send(err);
-    // We'll create a simple object to send back with a message and the id of the document that was removed
-    // You can really do this however you want, though.
     const response = {
       message: "Successfully deleted",
       id: comments._id,
