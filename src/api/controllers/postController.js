@@ -1,5 +1,7 @@
 const Post = require("../models/postModel");
-const axios = require("axios");
+const loremApi = require("../providers/lorem");
+
+
 
 exports.list_all_post = (req, res) => {
   Post.find({}, (error, posts) => {
@@ -36,12 +38,12 @@ exports.create_a_post = async (req, res) => {
   console.log(new_post);
 
   if (!new_post.content) {
-    const loremContent = await axios.get("https://loripsum.net/api/plaintext");
-    // console.log(loremContent.data)
-    new_post.content = loremContent.data;
+    const loremContent = await loremApi.getLorem("https://loripsum.net/api/plaintext");
+    console.log(await loremContent)
+    new_post.content = loremContent;
   }
 
-  // console.log(new_post.content);
+  console.log(new_post.content);
 
   new_post.save((error, post) => {
     if (error) {
