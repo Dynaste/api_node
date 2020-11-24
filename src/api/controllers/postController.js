@@ -1,4 +1,13 @@
 const Post = require("../models/postModel");
+const axios = require("axios");
+
+const getLorem = async (url) => {
+  try {
+    return await axios.get(url);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 exports.list_all_post = (req, res) => {
   Post.find({}, (error, posts) => {
@@ -30,9 +39,17 @@ exports.get_a_post = (req, res) => {
   });
 };
 
-exports.create_a_post = (req, res) => {
+exports.create_a_post = async (req, res) => {
   let new_post = new Post(req.body);
   console.log(new_post);
+
+  if (!new_post.content) {
+    const loremContent = await getLorem("https://loripsum.net/api/plaintext");
+    // console.log(loremContent.data)
+    new_post.content = loremContent.data;
+  }
+
+  // console.log(new_post.content);
 
   new_post.save((error, post) => {
     if (error) {
