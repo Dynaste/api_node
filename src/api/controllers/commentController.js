@@ -51,7 +51,7 @@ exports.create_a_comment = (req, res) => {
       let new_comment = new Comment({
         post_id: req.params.post_id,
         name: tokenDecode.email,
-        ...req.body,
+        message: req.body.message,
       });
       console.log(new_comment);
       new_comment.save((error, comment) => {
