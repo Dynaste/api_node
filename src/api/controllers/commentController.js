@@ -35,14 +35,14 @@ exports.create_a_comment = (req, res) => {
   let postId = req.params.post_id;
 
   Post.findById(postId, (error) => {
-    // ici on verifie que le user existe si il existe on le save
+    // ici on verifie que le post existe si il existe on le save
     if (error) {
-      // si le user n'existe pas on return une erreur
+      // si le post n'existe pas on return une erreur
       res.status(500);
       console.log(error);
       res.json({ message: error });
     } else {
-      // ici le user existe donc on peut le creer
+      // ici le post existe donc on peut le creer
 
       let new_comment = new Comment({
         post_id: req.params.post_id,
