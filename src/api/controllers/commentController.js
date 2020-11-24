@@ -51,30 +51,16 @@ exports.create_a_comment = (req, res) => {
 
 exports.update_a_comment = (req, res) => {
 
-    Post.findByIdAndUpdate(
-        // the id of the item to find
-        req.params.post_id,
-        
-        // the change to be made. Mongoose will smartly combine your existing 
-        // document with this change, which allows for partial updates too
-        req.body,
-        
-        // an option that asks mongoose to return the updated version 
-        // of the document instead of the pre-updated one.
-        {new: true},
-        
-        // the callback function
-        (err, comments) => {
-        // Handle any possible database errors
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body,{new: true},(err, comments) => {
             if (err) return res.status(500).send(err);
-            return res.status(200).res.send(comments);
+            return res.send(comments);
         }
     )
 }
 
 
 exports.delete_a_comment = (req, res) => {
-    Post.findByIdAndRemove(req.params.post_id, (err, comments) => {
+    Comment.findByIdAndRemove(req.params.comment_id, (err, comments) => {
         // As always, handle any potential errors:
         if (err) return res.status(500).send(err);
         // We'll create a simple object to send back with a message and the id of the document that was removed
