@@ -1,13 +1,6 @@
 const Post = require("../models/postModel");
 const axios = require("axios");
 
-const getLorem = async (url) => {
-  try {
-    return await axios.get(url);
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 exports.list_all_post = (req, res) => {
   Post.find({}, (error, posts) => {
@@ -44,7 +37,7 @@ exports.create_a_post = async (req, res) => {
   console.log(new_post);
 
   if (!new_post.content) {
-    const loremContent = await getLorem("https://loripsum.net/api/plaintext");
+    const loremContent = await axios.get("https://loripsum.net/api/plaintext");
     // console.log(loremContent.data)
     new_post.content = loremContent.data;
   }
