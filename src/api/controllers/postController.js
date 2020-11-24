@@ -1,7 +1,6 @@
 const Post = require("../models/postModel");
 const axios = require("axios");
 
-
 exports.list_all_post = (req, res) => {
   Post.find({}, (error, posts) => {
     if (error) {
