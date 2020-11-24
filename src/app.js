@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
 mongoose
   .connect("mongodb://localhost/nodeproject", { useNewUrlParser: true })
   .then(() => {
-    console.log("Connected to Database" + process.env.JWT_TOKEN);
+    console.log("Connected to Database , JWT : " + process.env.JWT_TOKEN);
   })
   .catch((err) => {
     console.log("Not Connected to Database ERROR! ", err);
